@@ -22,9 +22,4 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
-    <style name="Settings" parent="AppTheme">
-        <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>
-    </style>
-
 </resources>
