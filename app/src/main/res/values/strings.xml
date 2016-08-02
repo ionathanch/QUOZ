@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">QUOZ</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="phiRecip">0.618033988748984848</string>
+
+    <!-- Strings related to Settings -->
+    <string-array name="preferences_colour_title">
+        <item>Pastel</item>
+        <item>Pastel neon</item>
+        <item>Neon</item>
+    </string-array>
+    <string-array name="preferences_colour_values">
+        <item>0.3</item>
+        <item>0.5</item>
+        <item>0.7</item>
+    </string-array>
+
+    <string-array name="preferences_mode_title">
+        <item>Tap</item>
+        <item>Cycle</item>
+        <item>Leekspin</item>
+    </string-array>
+    <string-array name="preferences_mode_values">
+        <item>tap</item>
+        <item>change</item>
+        <item>leekspin</item>
+    </string-array>
+</resources>
