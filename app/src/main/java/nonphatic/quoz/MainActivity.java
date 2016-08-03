@@ -17,12 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.Explode;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private FloatingActionButton mFab;
+    private View mainView;
+    private Timer timer;
+    private TimerTask timerTask;
+    private Random random;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -91,13 +98,16 @@ public class MainActivity extends AppCompatActivity {
 
         mContentView = findViewById(R.id.fullscreen_content);
         mFab = (FloatingActionButton)findViewById(R.id.fab);
+        mainView = findViewById(R.id.main_layout);
+        timer = new Timer();
+        random = new Random();
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isSwiping) {
-                    setBackgroundToRandomColour(view);
+                    setBackgroundToRandomColour();
                 }
             }
         });
@@ -199,19 +209,21 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets a random background colour when activity resumes
+     * Adds setting background regularly based on preference
      */
     @Override
     public void onResume() {
         super.onResume();
-        setBackgroundToRandomColour(findViewById(R.id.main_layout));
+        setBackgroundToRandomColour();
+        setTimer();
     }
 
     /**
      * Sets background colour to a randomly-generated pastel colour
      */
-    public void setBackgroundToRandomColour(View view) {
+    private void setBackgroundToRandomColour() {
         int randomColour = generateRandomColour();
-        view.setBackgroundColor(randomColour);
+        mainView.setBackgroundColor(randomColour);
         ((TextView)mContentView).setText(String.format("#%s", Integer.toHexString(randomColour).substring(2)));
 
         // Set the text colour to something more readable given the colour type
@@ -232,17 +244,46 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Generates a random pastel colour
      */
-    public int generateRandomColour() {
+    private int generateRandomColour() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         float saturation = Float.parseFloat(preferences.getString("colour_type", "0.3"));
 
         float phiRecip = Float.parseFloat(getResources().getText(R.string.phiRecip).toString());
         float[] hsv = {
-                (new Random().nextFloat() + phiRecip) % 1 * 360, // random, nicely spaced hue
+                (random.nextFloat() + phiRecip) % 1 * 360, // random, nicely spaced hue
                 saturation,
                 1.0f // value
         };
         return Color.HSVToColor(hsv);
+    }
+
+    private void setTimer() {
+        if (timerTask != null) {
+            timerTask.cancel();
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String changeMode = preferences.getString("change_mode", "tap");
+        switch (changeMode) {
+            case "tap":
+                break;
+            case "cycle":
+                timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setBackgroundToRandomColour();
+                            }
+                        });
+                    }
+                };
+                timer.schedule(timerTask, 0, 1000);
+                break;
+            case "leekspin":
+                break;
+        }
     }
 
     public void openSettings(View view) {
