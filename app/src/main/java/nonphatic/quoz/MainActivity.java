@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 200, 424);
+                timer.schedule(timerTask, 200, 425);
                 mediaPlayer = MediaPlayer.create(this, R.raw.nyan);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
