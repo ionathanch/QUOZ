@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:title="Colour Type"
-        android:summary="The family of colours to randomly generate from."
-        android:key="colour_type"
-        android:defaultValue="0.3"
-        android:entries="@array/preferences_colour_title"
-        android:entryValues="@array/preferences_colour_values">
-    </ListPreference>
+    <SeekBarPreference
+        android:key="saturation"
+        android:title="Saturation"
+        android:summary="Set saturation"
+        android:max="100"
+        android:defaultValue="30">
+    </SeekBarPreference>
     <ListPreference
         android:title="Change Mode"
-        android:summary="How a colour change will be triggered."
         android:key="change_mode"
         android:defaultValue="tap"
         android:entries="@array/preferences_mode_title"
         android:entryValues="@array/preferences_mode_values">
     </ListPreference>
+    <Preference
+        android:title="Reset settings"
+        android:key="reset_button" />
 </PreferenceScreen>

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
     private TimerTask timerTask;
     private MediaPlayer mediaPlayer;
     private Random random;
+
+    private int saturationPercent;
+    private String changeMode;
+
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -98,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        getPreferences();
         mContentView = findViewById(R.id.fullscreen_content);
         mFab = (FloatingActionButton)findViewById(R.id.fab);
         mainView = findViewById(R.id.main_layout);
@@ -179,9 +185,8 @@ public class MainActivity extends AppCompatActivity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    /**
-     * Directs swipe events to toggle and click events to colour change
-     */
+
+    //region OVERRIDES
     private float yPosOnDown;
     private float yDelta;
     private boolean isSwiping;
@@ -209,20 +214,14 @@ public class MainActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(event);
     }
 
-    /**
-     * Sets a random background colour when activity resumes
-     * Adds setting background regularly based on preference
-     */
     @Override
     public void onResume() {
         super.onResume();
+        getPreferences();
         setBackgroundToRandomColour();
         setTimer();
     }
 
-    /**
-     * Release the media player when not in use
-     */
     @Override
     public void onPause() {
         super.onPause();
@@ -232,45 +231,39 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
     }
+    //endregion
 
-    /**
-     * Sets background colour to a randomly-generated pastel colour
-     */
-    private void setBackgroundToRandomColour() {
-        int randomColour = generateRandomColour();
-        mainView.setBackgroundColor(randomColour);
-        ((TextView)mContentView).setText(String.format("#%s", Integer.toHexString(randomColour).substring(2)));
-
-        // Set the text colour to something more readable given the colour type
+    //region HELPERS
+    public void getPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String currentColourType = preferences.getString("colour_type", "0.3");
-        switch (currentColourType) {
-            case "0.3":
-                ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorPastelBackground));
-                break;
-            case "0.5":
-                ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorPastelNeonBackground));
-                break;
-            case "0.7":
-                ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorNeonBackground));
-                break;
-        }
+        saturationPercent = preferences.getInt("saturation", 30);
+        changeMode = preferences.getString("change_mode", "tap");
     }
 
-    /**
-     * Generates a random pastel colour
-     */
-    private int generateRandomColour() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        float saturation = Float.parseFloat(preferences.getString("colour_type", "0.3"));
+    public void resetPreferences(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().clear().commit();
+        PreferenceManager.setDefaultValues(context, R.xml.preferences, true);
+    }
 
+    private void setBackgroundToRandomColour() {
+        float[] hsv = generateRandomColour();
+        float[] hsvText = new float[] { 0, 0, hsv[1] / 2 + 0.25f };
+        int randomColour = Color.HSVToColor(hsv);
+        int textColour = Color.HSVToColor(hsvText);
+
+        mainView.setBackgroundColor(randomColour);
+        ((TextView)mContentView).setText(String.format("#%s", Integer.toHexString(randomColour).substring(2)));
+        ((TextView)mContentView).setTextColor(textColour);
+    }
+
+    private float[] generateRandomColour() {
         float phiRecip = Float.parseFloat(getResources().getText(R.string.phiRecip).toString());
-        float[] hsv = {
-                (random.nextFloat() + phiRecip) % 1 * 360, // random, nicely spaced hue
-                saturation,
+        return new float[] {
+                (random.nextFloat() + phiRecip) % 1 * 360, // random, nicely-spaced hue
+                saturationPercent / 100f, // saturation
                 1.0f // value
         };
-        return Color.HSVToColor(hsv);
     }
 
     private void setTimer() {
@@ -278,8 +271,6 @@ public class MainActivity extends AppCompatActivity {
             timerTask.cancel();
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String changeMode = preferences.getString("change_mode", "tap");
         switch (changeMode) {
             case "tap":
                 break;
@@ -309,18 +300,38 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 0, 556);
+                timer.schedule(timerTask, 350, 555);
                 mediaPlayer = MediaPlayer.create(this, R.raw.ievan_polkka);
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
+                break;
+            case "nyan":
+                timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setBackgroundToRandomColour();
+                            }
+                        });
+                    }
+                };
+                timer.schedule(timerTask, 200, 424);
+                mediaPlayer = MediaPlayer.create(this, R.raw.nyan);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
                 break;
         }
     }
+    //endregion
 
+    //region ACTIVITIES
     public void openSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.PreferencesFragment.class.getName());
         intent.putExtra(SettingsActivity.EXTRA_NO_HEADERS, true);
         startActivity(intent);
     }
+    //endregion
 }

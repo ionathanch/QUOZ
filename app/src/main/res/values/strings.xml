@@ -23,10 +23,12 @@
         <item>Tap</item>
         <item>Cycle</item>
         <item>Leekspin</item>
+        <item>Nyan</item>
     </string-array>
     <string-array name="preferences_mode_values">
         <item>tap</item>
         <item>cycle</item>
         <item>leekspin</item>
+        <item>nyan</item>
     </string-array>
 </resources>
