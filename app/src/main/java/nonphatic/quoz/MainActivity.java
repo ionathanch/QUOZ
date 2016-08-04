@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private View mainView;
     private Timer timer;
     private TimerTask timerTask;
+    private MediaPlayer mediaPlayer;
     private Random random;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -219,6 +221,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Release the media player when not in use
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    /**
      * Sets background colour to a randomly-generated pastel colour
      */
     private void setBackgroundToRandomColour() {
@@ -229,15 +244,16 @@ public class MainActivity extends AppCompatActivity {
         // Set the text colour to something more readable given the colour type
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String currentColourType = preferences.getString("colour_type", "0.3");
-        String[] colourTypes = getResources().getStringArray(R.array.preferences_colour_values);
-        if (currentColourType.equals(colourTypes[0])) {
-            ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorPastelBackground));
-        }
-        else if (currentColourType.equals(colourTypes[1])) {
-            ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorPastelNeonBackground));
-        }
-        else if (currentColourType.equals(colourTypes[2])) {
-            ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorNeonBackground));
+        switch (currentColourType) {
+            case "0.3":
+                ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorPastelBackground));
+                break;
+            case "0.5":
+                ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorPastelNeonBackground));
+                break;
+            case "0.7":
+                ((TextView)mContentView).setTextColor(ContextCompat.getColor(this, R.color.colorNeonBackground));
+                break;
         }
     }
 
@@ -282,6 +298,21 @@ public class MainActivity extends AppCompatActivity {
                 timer.schedule(timerTask, 0, 1000);
                 break;
             case "leekspin":
+                timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setBackgroundToRandomColour();
+                            }
+                        });
+                    }
+                };
+                timer.schedule(timerTask, 0, 556);
+                mediaPlayer = MediaPlayer.create(this, R.raw.ievan_polkka);
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
                 break;
         }
     }
