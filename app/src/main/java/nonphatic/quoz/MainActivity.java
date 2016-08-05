@@ -25,6 +25,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.io.android.AudioDispatcherFactory;
+import be.tarsos.dsp.onsets.ComplexOnsetDetector;
+import be.tarsos.dsp.onsets.OnsetHandler;
+
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -300,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 350, 555);
+                timer.schedule(timerTask, 300, 555);
                 mediaPlayer = MediaPlayer.create(this, R.raw.ievan_polkka);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
@@ -317,12 +322,27 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 200, 425);
+                timer.schedule(timerTask, 180, 425);
                 mediaPlayer = MediaPlayer.create(this, R.raw.nyan);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
+                //testOnsets();
                 break;
         }
+    }
+
+    public void testOnsets() {
+        // needs ffmpeg???
+        AudioDispatcher dispatcher = AudioDispatcherFactory.fromPipe("/res/raw/nyan.mp3", 44100,5000,2500);
+        ComplexOnsetDetector cod = new ComplexOnsetDetector(521, 0.3, 256.0/44100.0*4.0, -70);
+        dispatcher.addAudioProcessor(cod);
+        cod.setHandler(new OnsetHandler() {
+            @Override
+            public void handleOnset(double v, double v1) {
+                System.out.println(v);
+            }
+        });
+
     }
     //endregion
 
