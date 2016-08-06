@@ -326,23 +326,8 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(this, R.raw.nyan);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
-                //testOnsets();
                 break;
         }
-    }
-
-    public void testOnsets() {
-        // needs ffmpeg???
-        AudioDispatcher dispatcher = AudioDispatcherFactory.fromPipe("/res/raw/nyan.mp3", 44100,5000,2500);
-        ComplexOnsetDetector cod = new ComplexOnsetDetector(521, 0.3, 256.0/44100.0*4.0, -70);
-        dispatcher.addAudioProcessor(cod);
-        cod.setHandler(new OnsetHandler() {
-            @Override
-            public void handleOnset(double v, double v1) {
-                System.out.println(v);
-            }
-        });
-
     }
     //endregion
 
