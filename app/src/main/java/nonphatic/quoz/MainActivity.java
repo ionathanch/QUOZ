@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         getPreferences();
         mContentView = findViewById(R.id.fullscreen_content);
@@ -313,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 180, 425);
+                timer.schedule(timerTask, 160, 425);
                 mediaPlayer = MediaPlayer.create(this, R.raw.nyan);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
