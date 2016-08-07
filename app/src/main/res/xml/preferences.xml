@@ -8,7 +8,7 @@
         android:defaultValue="30">
     </SeekBarPreference>
     <ListPreference
-        android:title="Change Mode"
+        android:title="Change mode"
         android:key="change_mode"
         android:defaultValue="tap"
         android:entries="@array/preferences_mode_title"
@@ -17,4 +17,8 @@
     <Preference
         android:title="Reset settings"
         android:key="reset_button" />
+    <nonphatic.quoz.preferences.AboutDialogPreference
+        android:title="About"
+        android:key="about"
+        android:dialogLayout="@layout/preference_about_dialog" />
 </PreferenceScreen>

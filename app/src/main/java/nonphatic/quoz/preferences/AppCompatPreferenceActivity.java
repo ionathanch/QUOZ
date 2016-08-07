@@ -1,4 +1,4 @@
-package nonphatic.quoz;
+package nonphatic.quoz.preferences;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

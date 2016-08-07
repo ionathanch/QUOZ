@@ -1,7 +1,6 @@
 package nonphatic.quoz;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -9,26 +8,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.transition.Explode;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import be.tarsos.dsp.AudioDispatcher;
-import be.tarsos.dsp.io.android.AudioDispatcherFactory;
-import be.tarsos.dsp.onsets.ComplexOnsetDetector;
-import be.tarsos.dsp.onsets.OnsetHandler;
+import nonphatic.quoz.preferences.SettingsActivity;
 
 import java.util.Random;
 import java.util.Timer;

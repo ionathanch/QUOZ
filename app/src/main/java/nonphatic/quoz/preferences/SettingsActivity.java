@@ -1,4 +1,4 @@
-package nonphatic.quoz;
+package nonphatic.quoz.preferences;
 
 
 import android.annotation.TargetApi;
@@ -6,25 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.transition.Explode;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 
-import java.util.List;
+import nonphatic.quoz.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
