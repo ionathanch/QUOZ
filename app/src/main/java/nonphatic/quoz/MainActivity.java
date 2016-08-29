@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 300, 555);
+                timer.schedule(timerTask, 300, 550);
                 mediaPlayer = MediaPlayer.create(this, R.raw.ievan_polkka);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 };
-                timer.schedule(timerTask, 160, 425);
+                timer.schedule(timerTask, 160, 420);
                 mediaPlayer = MediaPlayer.create(this, R.raw.nyan);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
