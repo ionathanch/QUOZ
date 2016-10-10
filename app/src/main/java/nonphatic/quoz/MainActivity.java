@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().clear().commit();
         PreferenceManager.setDefaultValues(context, R.xml.preferences, true);
+        Toast.makeText(getApplicationContext(), "Settings reset.", Toast.LENGTH_SHORT).show();
     }
 
     private void setBackgroundToRandomColour() {

@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import nonphatic.quoz.R;
 
@@ -161,11 +162,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                     preferences.edit().clear().commit();
-                    PreferenceManager.setDefaultValues(getContext(), R.xml.preferences, true);
+                    PreferenceManager.setDefaultValues(getActivity().getApplicationContext(), R.xml.preferences, true);
                     onStop();
                     onCreate(savedInstanceState);
+                    Toast.makeText(getActivity().getApplicationContext(), "Settings reset.", Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });

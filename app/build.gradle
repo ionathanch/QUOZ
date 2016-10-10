@@ -1,20 +1,28 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'AndroidKey'
+            storeFile file('C:/Users/Jonathan/Documents/Projects/Keystores/android.jks')
+            keyPassword 'jhwc2214'
+            storePassword 'jhwc2214'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
-
     defaultConfig {
         applicationId "nonphatic.quoz"
-        minSdkVersion 23
+        minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -25,5 +33,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:support-v4:24.1.1'
     compile 'com.android.support:design:24.1.1'
-    compile files('libs/TarsosDSP-Android-latest.jar')
 }
