@@ -9,3 +9,5 @@
 /projectFilesBackup
 gradle*
 /gradle
+/app/build
+keystore.properties

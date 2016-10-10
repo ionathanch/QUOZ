@@ -1,12 +1,16 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     signingConfigs {
         config {
             keyAlias 'AndroidKey'
+            keyPassword keystoreProperties['password']
             storeFile file('C:/Users/Jonathan/Documents/Projects/Keystores/android.jks')
-            keyPassword 'jhwc2214'
-            storePassword 'jhwc2214'
+            storePassword keystoreProperties['password']
         }
     }
     compileSdkVersion 24
@@ -23,6 +27,8 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+        }
+        debug {
         }
     }
 }
