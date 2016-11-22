@@ -17,3 +17,6 @@ Slide left for lower saturation (pasteller) and right for higher saturation (neo
 Maybe lower your phone volume when in public.
 ###Reset settings
 Tap to undo your life mistakes. Currently buggy.
+
+##Demo
+![animated-demo](cycle.gif)
