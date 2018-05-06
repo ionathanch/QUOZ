@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SeekBarPreference
-        android:key="saturation"
+        android:key="@string/preferences_colour_key"
         android:title="Saturation"
         android:summary="Set saturation"
         android:max="100"
-        android:defaultValue="30">
+        android:defaultValue="@integer/preferences_colour_default">
     </SeekBarPreference>
     <ListPreference
         android:title="Change mode"
-        android:key="change_mode"
-        android:defaultValue="tap"
+        android:key="@string/preferences_mode_key"
+        android:defaultValue="@string/preferences_mode_default"
         android:entries="@array/preferences_mode_title"
         android:entryValues="@array/preferences_mode_values">
     </ListPreference>
     <Preference
         android:title="Reset settings"
-        android:key="reset_button" />
+        android:key="@string/preferences_reset_key" />
     <nonphatic.quoz.preferences.AboutDialogPreference
         android:title="About"
         android:key="about"
