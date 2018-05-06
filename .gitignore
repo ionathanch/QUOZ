@@ -6,10 +6,6 @@
 /.idea/libraries
 .DS_Store
 /build
-/captures
-/projectFilesBackup
 gradle*
 /gradle
 /app/build
-keystore.properties
-/app/release
